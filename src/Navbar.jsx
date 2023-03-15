@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from './AuthContextProvider';
 
 const Navbar = () => {
+  const { authData, updateAuthData } = useContext(AuthContext);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
@@ -27,15 +30,26 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/login">
-                Login
-              </Link>
-            </li>
-            <li className="nav-item">
               <Link className="nav-link" to="/dashboard">
                 Dashboard
               </Link>
             </li>
+            {authData ? (
+              <li className="nav-item">
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={() => updateAuthData(null)}
+                >
+                  Logout
+                </button>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <Link to="/login">
+                  <button className="btn btn-outline-secondary">Login</button>
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>

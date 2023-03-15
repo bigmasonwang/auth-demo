@@ -1,13 +1,18 @@
 import React, { useContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AuthContext } from './AuthContextProvider';
+// import { AuthContext } from './AuthContextProvider';
+import { login } from './redux/userSlice';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
-  const { updateAuthData } = useContext(AuthContext);
+  // useContext: 好多组件都能用的 useState
+  // const { updateAuthData } = useContext(AuthContext);
+
+  const dispatch = useDispatch();
 
   const from = location.state?.from?.pathname || '/';
 
@@ -21,7 +26,8 @@ const LoginForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    updateAuthData(username);
+    // updateAuthData(username);
+    dispatch(login(username))
     navigate(from, { replace: true });
   };
 

@@ -1,9 +1,18 @@
 import React, { useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { AuthContext } from './AuthContextProvider';
+// import { AuthContext } from './AuthContextProvider';
+import { logout } from './redux/userSlice';
 
 const Navbar = () => {
-  const { authData, updateAuthData } = useContext(AuthContext);
+  // const { authData, updateAuthData } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const isloggedIn = !!user.name;
+  const handleLogout = () => {
+    // updateAuthData(null);
+    dispatch(logout());
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -34,11 +43,11 @@ const Navbar = () => {
                 Dashboard
               </Link>
             </li>
-            {authData ? (
+            {isloggedIn ? (
               <li className="nav-item">
                 <button
                   className="btn btn-outline-secondary"
-                  onClick={() => updateAuthData(null)}
+                  onClick={handleLogout}
                 >
                   Logout
                 </button>

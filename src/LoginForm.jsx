@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContextProvider';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const { updateAuthData } = useContext(AuthContext);
+
+  const from = location.state?.from?.pathname || '/';
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -16,8 +21,8 @@ const LoginForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Add your login logic here
-    navigate('/dashboard'); // redirect to dashboard on successful login
+    updateAuthData(username);
+    navigate(from, { replace: true });
   };
 
   return (
